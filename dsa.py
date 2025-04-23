@@ -424,6 +424,13 @@ Three Foundational Problems to note:
 Recursion works if there is a sequence and a base case to break it
 """
 
+def identify_adjacent(s: str, k: int) -> str:
+    if len(s) < k:
+        return s
+    elif s[0]*k == s[:k]:
+        return identify_adjacent(s[k:], k)
+    return s[0] + identify_adjacent(s[1:], k)
+
 #Fibonacci Sequence (time complexity = O(N))
 def fib(n, computed = {0:0, 1:1}):
     if n not in computed:
