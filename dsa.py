@@ -150,6 +150,14 @@ def find_unique_elements(list1,list2):
     unique_list2 = sorted(list(set2 - set1))
     return (unique_list1,unique_list2)
 
+#Outputs list of elements uncommon in both arrays
+def diff(arrA: List[int], arrB: List[int]) -> List[int]:
+    setA = set(arrA)
+    setB = set(arrB)
+    unique_listA = list(setA - setB)
+    unique_listB = list(setB - setA)
+    result = unique_listA + unique_listB
+    return result
 
 #filtering out repeating elements
 def repeated_elements(list1):
@@ -194,6 +202,19 @@ def finding_anagram(list1,list2):
             anagram_pairs.append((anagram_dict1[key],anagram_dict2[key]))
     return anagram_pairs
     
+
+"""STRING"""
+###This function showcases string manipulation techniques; reversing string, removing characters from string
+#use backlash before including ' in string to escape it
+def is_palindrome(s: str) -> bool:
+    special_characters = '!@#1234567890$%^"&*()_ -=+?/><,":|\}{[]`~}\''
+    word = s.lower()
+    for char in special_characters:
+        word = word.replace(char,"")
+    if word == word[::-1]:
+        return True 
+    else: 
+        return False
 
 """
 HASH TABLES / HASH MAPS (dictionaries)
@@ -616,3 +637,37 @@ print("x for which f(x) is approximately 0:", result)
 
 # Outputs:
 # x for which f(x) is approximately 0: 1.4142131805419922
+
+
+#GO THROUGH
+from typing import List
+
+def reverse_words(arr: List[str]) -> List[str]:
+    arr.reverse()
+
+    n= len(arr)
+    start=0
+
+    while start<n:
+        end=start
+        while end<n and arr[end] !=" ":
+            end+=1
+
+        left,right=start,end-1
+        while left<right:
+            arr[left],arr[right]=arr[right],arr[left] 
+            left+=1
+            right-=1
+
+        start=end+1
+
+    return arr
+
+
+    
+# Test
+arr = [ 'p', 'e', 'r', 'f', 'e', 'c', 't', '  ',
+        'm', 'a', 'k', 'e', 's', '  ',
+        'p', 'r', 'a', 'c', 't', 'i', 'c', 'e' ]
+
+print("output:", reverse_words(arr))
