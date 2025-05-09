@@ -292,3 +292,85 @@ left = interval[0]
 right = interval[1]
 
 print(perform_binary_search(f,target,right,left,precision))
+
+"""
+ADVANCED PROBLEMS
+
+Problem 1: Search in a Rotated Sorted Array
+Imagine a sorted array of integers that has been rotated at an unknown pivot point. This list maintains its sorted order but now starts from a random position. Your task is to find a specific target value within this array and return its index. If the target isn't present, return -1.
+
+For example, the initial sorted array could be [1, 2, 4, 5, 8, 9, 11, 15], but after a single rotation it'd become [8, 9, 11, 15, 1, 2, 4, 5].
+
+Example Application: Picture a server system where processes are listed in ascending order based on their IDs. Suppose a disruption rotates this list. Now, the system needs to find a process using a specific ID. A standard binary search isn't sufficient as the list, though sorted, starts at an arbitrary point.
+
+Naive Approach: A straightforward solution involves scanning each element in the array until we find a match or exhaust the list. This linear search approach is simple but computationally expensive for large lists
+"""
+
+
+def search(arr, target):
+    l,r = 0, len(arr) - 1
+    while r-l > 0:
+        mid = (r + l) // 2
+        if target == arr[mid]:
+            return mid
+        if arr[l] <= arr[mid]:  #check if l is sorted
+            if arr[l] < target <= arr[mid]:
+                r = mid - 1
+            else:
+                l = mid + 1
+        else:   #check if r is sorted
+            if arr[mid] < target <= arr[r]:
+                l = mid + 1
+            else:
+                r = mid - 1
+    return -1  #not found
+
+
+nums = [8, 9, 11, 15, 1, 2, 4, 5]
+target = 2
+print(search(nums, target))  
+
+
+"""
+Problem 2: Locate the First and Last Position of an Element in a Sorted Array
+In this problem, you are tasked with finding both the first and last positions of a certain target value in a sorted array. If the target is not found within the array, your function should return [-1, -1].
+
+Example Application: To make this problem more relatable, picture a situation involving time-series analysis. For instance, you have a sorted array filled with timestamps of user activities. A user could perform the same activity multiple times, and your task is to determine the first and last instance that a particular activity was performed.
+
+Simplistic Approach: An immediate solution could involve scanning the entire array while taking note of the first and last appearances of the target. Although this method is sound and would yield the correct result, it is far from efficient. This linear search approach could result in a worst-case time complexity of O(n)
+"""
+
+def find_first_and_last(arr, target):
+    def get_occurence(is_first):
+        l,r = 0, len(arr) - 1
+        index = -1
+        while  r - l > 0:
+            mid = (r + l) // 2
+            if arr[mid] == target:
+                index = mid
+                if is_first:
+                    r = mid - 1
+                else:
+                    l = mid + 1
+            elif arr[mid] < target:
+                l = mid + 1
+            else:
+                r = mid - 1
+        return index
+    return ([get_occurence(True), get_occurence(False)])
+
+
+nums = [1, 2, 2, 2, 3, 4, 5]
+target = 2
+print(find_first_and_last(nums, target))
+
+
+"""
+Problem 3: Find or Define Insert Position in a Sorted List
+Our task is to find or determine the index where a target should be inserted in a sorted integer list. Visualize a librarian's task of adding a new book to a properly arranged shelf. We'll do a similar thing but with numbers in a sorted list.
+
+Example Application: To give this problem real-world relevance, picture a document management system where reports are sorted based on their IDs. Suppose a new report comes in, and it has to be placed in the correct position based on its ID. Here, our task mirrors the system's behavior - placing a number correctly in a sorted list.
+
+Simplistic Approach: A basic solution might involve a left-to-right scan of the array, comparing each element with the target until we encounter an element that matches the target (where we return the index), or one that's larger (where we return the current index as that's the insertion point of our target). This approach, however, is inefficient as it demands a full scan of the array in worst-case scenarios (when the target is larger than every existing item). This results in a linear time complexity of O(n)
+O(n), undesirable for gargantuan arrays.
+"""
